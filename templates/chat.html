@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Python Chat</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <!-- <link rel='stylesheet' type='text/css' media='screen' href='main.css'> -->
+    <!-- <script src='main.js'></script> -->
+    <style>
+        .chat{
+            display: flex;
+            flex-direction: column;
+            
+        }
+
+        .chat span {
+            margin-bottom: 10px;
+        }
+
+        form {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chat">
+    </div>
+
+    <div>
+        <form>
+            <input type="text" placeholder="Insira seu nome">
+            <input type="text" placeholder="Insira sua mensagem">
+            <!-- <input type="image"> -->
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
+    <script>
+        window.onload = function(){
+            // const socket = io('http://127.0.0.1:59000');
+            const socket = io('http://192.168.0.13:59000');
+
+            function addToChat(msg){
+                const span = document.createElement("span");
+                const chat = document.querySelector(".chat")
+                span.innerHTML = `<strong> ${msg.nome}: </strong> ${msg.message} ${msg.dataFormatada}`
+                chat.append(span);
+            }
+
+            socket.on('connect', () => {
+                socket.send('Usuario conectado ao socket');
+                console.log(socket.connected)
+            });
+            
+            document.querySelector("form").addEventListener("submit", function(event){
+                event.preventDefault(); // tirando refresh automatico da pagina
+                var dataHora = new Date()
+                const dataFormatada = dataHora.getDay() + "/" + dataHora.getMonth()+1 + "/" + dataHora.getFullYear() + " " + dataHora.getHours() + ":" + dataHora.getMinutes() + ":" + dataHora.getSeconds()
+                // console.log(dataFormatada)
+
+                socket.emit('sendMessage', {nome: event.target[0].value, message: event.target[1].value, dataFormatada: dataFormatada}) // enviando as infos para o backend
+                event.target[0].value = "";
+                event.target[1].value = "";
+                // event.target[2].value = "";
+            });
+
+            socket.on('getMessage', (msg) =>{
+               addToChat(msg)
+            })
+
+            socket.on('message', (msgs) => {
+                for(msg of msgs){
+                    addToChat(msg)
+                }
+                // console.log(msgs)
+            })
+
+        }
+
+
+
+    </script>
+</body>
+</html>

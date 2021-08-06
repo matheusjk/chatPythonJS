@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Python Chat</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link 
+    <!-- <link rel='stylesheet' type='text/css' media='screen' href='main.css'> -->
+    <!-- <script src='main.js'></script> -->
+    <style>
+        .chat{
+            display: flex;
+            flex-direction: column;
+            
+        }
+
+        .chat span {
+            margin-bottom: 10px;
+        }
+
+        form {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chat">
+    </div>
+
+    <input type="text" id="message" placeholder="Insira seu nome">
+    <button id="send">Enviar</button>
+
+    <input type="text" id="username" placeholder="Insira sua mensagem">   <!-- <input type="image"> -->
+    <button type="send_username">Enviar</button>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
+</body>
+</html>
