@@ -28,4 +28,4 @@ def message_handler(msg):
 #     print(msg)
 
 if __name__ == "__main__":
-    io.run(app, debug=True, port=59000, host="192.168.0.13")
+    io.run(app, debug=True, port=59001, host="192.168.0.13")
